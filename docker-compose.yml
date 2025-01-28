@@ -11,7 +11,7 @@ services:
     env_file: .env.prod
     environment:
       - NODE_ENV=production
-      - SERVER_URL=${HOST_URL:-https://localhost:3001}/app
+      - SERVER_URL=${HOST_URL:-http://192.168.50.14:3001}/app
     networks:
       - app-network
   mongo:
@@ -33,22 +33,6 @@ services:
       - "3000:3000"
     networks:
       - app-network
-  caddy:
-    image: caddy:latest
-    container_name: caddy-container
-    ports:
-      - "3001:3001"
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-    networks:
-      - app-network
-    environment:
-      - HOST_URL=${HOST_URL:-localhost:3001}
 networks:
   app-network:
     driver: bridge
@@ -56,6 +40,4 @@ networks:
 volumes:
   data-volume:
   web-root:
-  caddy_data:
-  caddy_config:
   opensign-files:
